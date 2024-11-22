@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-          "postinstall": "prisma generate && npx prisma migrate resolve --applied \"initial_migration\" && npx prisma db push --accept-data-loss && npm install lucide && npx prisma migrate deploy"
+           "postinstall": "prisma generate && npx prisma migrate dev --name initial_migration && npx prisma migrate resolve --applied \"initial_migration\" && npx prisma db push --accept-data-loss && npm install lucide && npx prisma migrate deploy"
 },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
