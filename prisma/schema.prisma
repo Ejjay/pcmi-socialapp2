@@ -23,7 +23,6 @@ model User {
   posts                   Post[]
   following               Follow[]     @relation("Following")
   followers               Follow[]     @relation("Followers")
-  likes                   Like[]       // You may choose to keep or remove this if you're using the Reaction model
   bookmarks               Bookmark[]
   comments                Comment[]
   receivedNotifications    Notification[] @relation("Recipient")
@@ -46,7 +45,7 @@ model Session {
 
 model Follow {
   followerId  String
-  follower     User   @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
+  follower    User   @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
   followingId String
   following   User   @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
 
@@ -55,12 +54,12 @@ model Follow {
 }
 
 model Post {
-  id                      String       @id @default(cuid())
+  id                      String         @id @default(cuid())
   content                 String
   userId                  String
-  user                    User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   attachments             Media[]
-  reactions               Reaction[]   // Add this line for reactions
+  reactions               Reaction[]     // Add this line for reactions
   bookmarks               Bookmark[]
   comments                Comment[]
   linkedNotifications     Notification[]
@@ -98,16 +97,6 @@ model Comment {
   createdAt DateTime @default(now())
 
   @@map("comments")
-}
-
-model Like {
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  postId String
-  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, postId])
-  @@map("likes")
 }
 
 model Reaction {
