@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-            "postinstall": "prisma generate && npx prisma migrate deploy && npm install lucide" 
-},
+            "postinstall": "prisma generate && npx prisma db push && npm install lucide"
+  },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@lucia-auth/adapter-prisma": "^4.0.1",
