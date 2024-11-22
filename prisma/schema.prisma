@@ -111,6 +111,24 @@ model Like {
   @@map("likes")
 }
 
+model Reaction {
+  id           String       @id @default(cuid())
+  postId       String
+  post         Post         @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type         ReactionType
+  createdAt    DateTime     @default(now())
+
+  @@unique([userId, postId, type])
+  @@map("reactions")
+}
+
+enum ReactionType {
+  LIKE
+  THUMBS_UP
+}
+
 model Bookmark {
   id     String @id @default(cuid())
   userId String
