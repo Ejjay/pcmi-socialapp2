@@ -9,29 +9,28 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-
-
 model User {
-       id             String   @id
-       username       String   @unique
-       displayName    String
-       email          String?  @unique
-       passwordHash   String?
-       googleId       String?  @unique
-       avatarUrl      String?
-       bio            String?
-       isVerified     Boolean  @default(false)
-       sessions       Session[]
-       posts          Post[]
-       following      Follow[] @relation("Following")
-       followers      Follow[] @relation("Followers")
-  likes                 Like[]
-  bookmarks             Bookmark[]
-  comments              Comment[]
-  receivedNotifications Notification[] @relation("Recipient")
-  issuedNotifications   Notification[] @relation("Issuer")
+  id                      String       @id
+  username                String       @unique
+  displayName             String
+  email                   String?      @unique
+  passwordHash            String?
+  googleId                String?      @unique
+  avatarUrl               String?
+  bio                     String?
+  isVerified              Boolean      @default(false)
+  sessions                Session[]
+  posts                   Post[]
+  following               Follow[]     @relation("Following")
+  followers               Follow[]     @relation("Followers")
+  likes                   Like[]       // You may choose to keep or remove this if you're using the Reaction model
+  bookmarks               Bookmark[]
+  comments                Comment[]
+  receivedNotifications    Notification[] @relation("Recipient")
+  issuedNotifications      Notification[] @relation("Issuer")
+  reactions               Reaction[]   // Add this line for reactions
 
-  createdAt DateTime @default(now())
+  createdAt               DateTime     @default(now())
 
   @@map("users")
 }
@@ -47,7 +46,7 @@ model Session {
 
 model Follow {
   followerId  String
-  follower    User   @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
+  follower     User   @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
   followingId String
   following   User   @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
 
@@ -56,17 +55,17 @@ model Follow {
 }
 
 model Post {
-  id                  String         @id @default(cuid())
-  content             String
-  userId              String
-  user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  attachments         Media[]
-  likes               Like[]
-  bookmarks           Bookmark[]
-  comments            Comment[]
-  linkedNotifications Notification[]
+  id                      String       @id @default(cuid())
+  content                 String
+  userId                  String
+  user                    User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attachments             Media[]
+  reactions               Reaction[]   // Add this line for reactions
+  bookmarks               Bookmark[]
+  comments                Comment[]
+  linkedNotifications     Notification[]
 
-  createdAt DateTime @default(now())
+  createdAt               DateTime     @default(now())
 
   @@map("posts")
 }
