@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate && npx prisma db push && npm install lucide"
+    "postinstall": "prisma generate && npx prisma db push && npm install lucide && npx prisma migrate dev --name add_reactions"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
